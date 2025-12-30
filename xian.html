@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>西安旅游指南 - 十三朝古都，盛世长安</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 英雄区 */
+        .hero {
+            height: 80vh;
+            /* 本地图片替换提示：将下方路径改为你的本地图片路径 */
+            background: url('xian/lunbo1.png') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #ff7a45;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+        
+        /* 容器样式 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 简介部分 */
+        .intro {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .intro h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        .intro-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .intro-img img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* 热门景点 */
+        .attractions {
+            padding: 4rem 0;
+            background-color: #f5f5f5;
+        }
+        
+        .attractions h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover .card-img img {
+            transform: scale(1.1);
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+        
+        .card-content p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        /* 出行方式 */
+        .transport {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .transport h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        .transport-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .transport-item {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .transport-item i {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+        
+        .transport-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        /* 美食推荐 */
+        .food {
+            padding: 4rem 0;
+            background-color: #f5f5f5;
+        }
+        
+        .food h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            font-size: 1.1rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .intro-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .intro h2, .attractions h2, .transport h2, .food h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 英雄区 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>西安 · 盛世长安</h1>
+            <p>十三朝古都，华夏文明的摇篮。西安既有兵马俑的雄浑壮阔，也有大唐不夜城的璀璨繁华，一城看尽千年史。</p>
+            <a href="#attractions" class="btn">探索西安</a>
+        </div>
+    </section>
+
+    <!-- 城市简介 -->
+    <section class="intro" id="intro">
+        <div class="container">
+            <h2>西安简介</h2>
+            <div class="intro-content">
+                <div class="intro-text">
+                    <p>西安，古称长安、镐京，是陕西省省会、副省级市、国家中心城市，国务院批复确定的中国西部地区重要的中心城市，国家重要的科研、教育、工业基地。</p>
+                    <br>
+                    <p>西安是中华文明和中华民族重要发祥地之一，先后有西周、秦、汉、唐等13个王朝在此建都，是世界四大古都之一，拥有5000多年文明史、3100多年建城史和1100多年建都史。</p>
+                    <br>
+                    <p>西安拥有秦始皇陵及兵马俑、大雁塔、小雁塔、唐长安城大明宫遗址、汉长安城未央宫遗址、兴教寺塔等6处世界文化遗产，是中国最佳旅游目的地之一。</p>
+                </div>
+                <div class="intro-img">
+                    <!-- 本地图片替换提示：将下方路径改为你的本地图片路径 -->
+                    <img src="xian/lunbo.png" alt="西安城市风光">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 热门景点 -->
+    <section class="attractions" id="attractions">
+        <div class="container">
+            <h2>热门景点</h2>
+            <div class="cards">
+                <!-- 秦始皇兵马俑博物馆 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/bowuguan.png" alt="秦始皇兵马俑">
+                    </div>
+                    <div class="card-content">
+                        <h3>秦始皇兵马俑博物馆</h3>
+                        <p>世界第八大奇迹，秦始皇陵的陪葬坑，出土的兵马俑规模宏大、造型逼真，再现了秦代军队的编制和风貌，是中外游客必打卡的地标。</p>
+                        <p><strong>门票：</strong>120元（旺季），100元（淡季）</p>
+                    </div>
+                </div>
+                
+                <!-- 西安城墙 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/xianchengqiang.png" alt="西安城墙">
+                    </div>
+                    <div class="card-content">
+                        <h3>西安城墙</h3>
+                        <p>中国现存规模最大、保存最完整的古代城垣，全长13.74公里，始建于隋唐，扩建于明代。可骑行绕城一周，俯瞰古城风貌，夜景尤为震撼。</p>
+                        <p><strong>门票：</strong>54元</p>
+                    </div>
+                </div>
+                
+                <!-- 大唐不夜城 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/buyec.png" alt="大唐不夜城">
+                    </div>
+                    <div class="card-content">
+                        <h3>大唐不夜城</h3>
+                        <p>以盛唐文化为背景的步行街，全长2100米，夜晚灯光璀璨，有沉浸式唐风演艺、网红不倒翁表演，再现大唐盛世的繁华景象。</p>
+                        <p><strong>门票：</strong>免费</p>
+                    </div>
+                </div>
+                
+                <!-- 大雁塔·大唐芙蓉园 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/dayanta.png" alt="大雁塔">
+                    </div>
+                    <div class="card-content">
+                        <h3>大雁塔·大唐芙蓉园</h3>
+                        <p>大雁塔为玄奘法师为保存经卷佛像而建，是西安的城市象征；大唐芙蓉园是中国第一个全方位展示盛唐风貌的大型皇家园林式文化主题公园。</p>
+                        <p><strong>门票：</strong>大雁塔40元，大唐芙蓉园120元</p>
+                    </div>
+                </div>
+                
+                <!-- 华清宫 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/huaqinggong.png" alt="华清宫">
+                    </div>
+                    <div class="card-content">
+                        <h3>华清宫</h3>
+                        <p>唐代封建帝王游幸的别宫，因杨贵妃沐浴而闻名，也是“西安事变”的发生地。景区内有长恨歌实景演出，还原盛唐爱情故事。</p>
+                        <p><strong>门票：</strong>120元，长恨歌演出票298元起</p>
+                    </div>
+                </div>
+                
+                <!-- 回民街 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/huiminjie.png" alt="回民街">
+                    </div>
+                    <div class="card-content">
+                        <h3>回民街</h3>
+                        <p>西安著名的美食文化街区，北院门为主街，全长500米，汇集了肉夹馍、泡馍、凉皮、甑糕等陕西特色小吃，是体验西安美食的好去处。</p>
+                        <p><strong>门票：</strong>免费</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 出行方式 -->
+    <section class="transport" id="transport">
+        <div class="container">
+            <h2>出行方式</h2>
+            <div class="transport-content">
+                <!-- 飞机 -->
+                <div class="transport-item">
+                    <i class="fas fa-plane"></i>
+                    <h3>飞机</h3>
+                    <p>西安咸阳国际机场距市中心约40公里，有机场城际铁路（45分钟）、机场大巴（1小时）、出租车（约100元）往返市区，交通便捷。</p>
+                </div>
+                
+                <!-- 高铁/火车 -->
+                <div class="transport-item">
+                    <i class="fas fa-train"></i>
+                    <h3>高铁/火车</h3>
+                    <p>西安有西安北站（高铁枢纽）、西安站、西安东站等，高铁到北京4.5小时，到成都3小时，到郑州2小时，是西北高铁核心枢纽。</p>
+                </div>
+                
+                <!-- 地铁 -->
+                <div class="transport-item">
+                    <i class="fas fa-subway"></i>
+                    <h3>地铁</h3>
+                    <p>西安地铁已开通9条线路，覆盖主城区及主要景点，兵马俑、大雁塔、大唐不夜城等均有地铁可达，票价2-9元，支持支付宝/微信乘车码。</p>
+                </div>
+                
+                <!-- 公交/出租车 -->
+                <div class="transport-item">
+                    <i class="fas fa-bus"></i>
+                    <h3>公交/出租车</h3>
+                    <p>公交线路覆盖全城，票价1-2元（空调车2元）。出租车起步价9元/3公里，网约车普及，古城墙内建议打车或步行。</p>
+                </div>
+                
+                <!-- 共享单车/电动车 -->
+                <div class="transport-item">
+                    <i class="fas fa-bicycle"></i>
+                    <h3>共享单车/电动车</h3>
+                    <p>西安主城区共享单车密集，城墙周边、曲江新区骑行体验佳，城墙内禁止电动车通行，骑行游览古城墙下的老街巷别有风味。</p>
+                </div>
+                
+                <!-- 旅游专线 -->
+                <div class="transport-item">
+                    <i class="fas fa-bus-alt"></i>
+                    <h3>旅游专线</h3>
+                    <p>西安有多条旅游公交专线，如306路（游5）直达兵马俑/华清宫（7元），大雁塔至大唐不夜城有免费接驳车，景区间出行便捷。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 美食推荐 -->
+    <section class="food" id="food">
+        <div class="container">
+            <h2>特色美食</h2>
+            <div class="cards">
+                <!-- 肉夹馍 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/rojiamo.png" alt="肉夹馍">
+                    </div>
+                    <div class="card-content">
+                        <h3>肉夹馍</h3>
+                        <p>西安招牌美食，分为腊汁肉夹馍和潼关肉夹馍，腊汁肉用老汤慢炖而成，肥而不腻，夹入酥脆的白吉馍中，一口下去满口留香。</p>
+                    </div>
+                </div>
+                
+                <!-- 羊肉泡馍 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/yangropaomo.png" alt="羊肉泡馍">
+                    </div>
+                    <div class="card-content">
+                        <h3>羊肉泡馍</h3>
+                        <p>西安经典名吃，将烙饼掰成小块，加入熬制好的羊肉汤，配粉丝、葱花、糖蒜食用，汤鲜味浓，是冬季暖胃佳品，老孙家、同盛祥为老字号。</p>
+                    </div>
+                </div>
+                
+                <!-- biangbiang面 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/mian.png" alt="biangbiang面">
+                    </div>
+                    <div class="card-content">
+                        <h3>biangbiang面</h3>
+                        <p>陕西八大怪之一“面条像裤带”的代表，手工擀制的宽面，浇上油泼辣子、酱油、醋等调料，口感筋道，香辣过瘾。</p>
+                    </div>
+                </div>
+                
+                <!-- 凉皮 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/liangpi.png" alt="凉皮">
+                    </div>
+                    <div class="card-content">
+                        <h3>凉皮</h3>
+                        <p>西安特色小吃，分为米皮和面皮，以秦镇米皮、汉中热米皮、岐山擀面皮最知名，调上油泼辣子、醋、蒜水，酸辣爽口，是夏日必备。</p>
+                    </div>
+                </div>
+                
+                <!-- 甑糕 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/gao.png" alt="甑糕">
+                    </div>
+                    <div class="card-content">
+                        <h3>甑糕</h3>
+                        <p>西安传统甜食，用糯米、红枣、芸豆蒸制而成，软糯香甜，枣香浓郁，是老西安人早餐和夜宵的经典选择，回民街随处可见。</p>
+                    </div>
+                </div>
+                
+                <!-- 葫芦鸡 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="xian/huluji.png" alt="葫芦鸡">
+                    </div>
+                    <div class="card-content">
+                        <h3>葫芦鸡</h3>
+                        <p>陕西传统名菜，整鸡先煮后蒸再炸，外皮金黄酥脆，内里肉质鲜嫩，蘸椒盐食用，被誉为“长安第一味”，西安饭庄的葫芦鸡最正宗。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2025 西安旅游指南 | 十三朝古都，盛世长安</p>
+                <br>
+                <p>温馨提示：兵马俑景区需乘坐正规旅游专线，西安夏季炎热冬季寒冷，回民街美食建议按需点单，文明旅游，爱护文物</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

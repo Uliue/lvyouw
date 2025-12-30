@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京五日游攻略</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;}
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 左侧行程栏 */
+        .itinerary {
+            width: 35%;
+            height: 100%;
+            background: white;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        }
+        .day-title {
+            margin: 20px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #165DFF;
+            font-size: 20px;
+            color: #333;
+        }
+        .day-title.day2 {border-color: #00B42A;}
+        .day-title.day3 {border-color: #FF7D00;}
+        .day-title.day4 {border-color: #975FE4;}
+        .day-title.day5 {border-color: #F53F3F;}
+        
+        .spot-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+        .spot-item:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-color: #ddd;
+        }
+        .spot-item.active {
+            background-color: #e8f4ff;
+            border-color: #165DFF;
+        }
+        .spot-img {
+            width: 100px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .spot-info h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .spot-info p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 右侧高德地图 */
+        #map-container {
+            width: 65%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧行程栏 -->
+    <div class="itinerary">
+        <!-- 第一天：核心地标 -->
+        <h2 class="day-title">第一天：京城核心地标</h2>
+        <div class="spot-item" data-spot="天安门广场">
+            <!-- 本地图片路径：请将对应图片放到 lvyou 文件夹 -->
+            <img class="spot-img" src="lvyou/tiananm.png" alt="天安门广场">
+            <div class="spot-info">
+                <h3>天安门广场</h3>
+                <p>北京的心脏地带，可观看升国旗仪式，毗邻天安门城楼、人民英雄纪念碑。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="故宫博物院">
+            <img class="spot-img" src="lvyou/gugongbowuy.png" alt="故宫博物院">
+            <div class="spot-info">
+                <h3>故宫博物院</h3>
+                <p>明清两代皇家宫殿，世界五大宫之首，馆藏超186万件珍贵文物。</p>
+            </div>
+        </div>
+
+        <!-- 第二天：皇家园林 -->
+        <h2 class="day-title day2">第二天：皇家园林巡礼</h2>
+        <div class="spot-item" data-spot="颐和园">
+            <img class="spot-img" src="lvyou/yihey.png" alt="颐和园">
+            <div class="spot-info">
+                <h3>颐和园</h3>
+                <p>中国现存最大的皇家园林，以昆明湖、万寿山为核心，兼具江南水乡与北方山水之美。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="天坛公园">
+            <img class="spot-img" src="lvyou/tiantan.png" alt="天坛公园">
+            <div class="spot-info">
+                <h3>天坛公园</h3>
+                <p>明清帝王祭天祈谷之地，祈年殿、圜丘坛为标志性建筑，建筑声学奇观闻名。</p>
+            </div>
+        </div>
+
+        <!-- 第三天：长城雄关 -->
+        <h2 class="day-title day3">第三天：长城雄关揽胜</h2>
+        <div class="spot-item" data-spot="八达岭长城">
+            <img class="spot-img" src="lvyou/changc.png" alt="八达岭长城">
+            <div class="spot-info">
+                <h3>八达岭长城</h3>
+                <p>明长城中保存最完好的地段，地势险峻，视野开阔，“不到长城非好汉”的核心地段。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="明十三陵">
+            <img class="spot-img" src="lvyou/mingshisan.png" alt="明十三陵">
+            <div class="spot-info">
+                <h3>明十三陵</h3>
+                <p>明朝十三个皇帝的陵寝群，定陵为唯一开放地宫的陵寝，展现明代皇家陵寝规制。</p>
+            </div>
+        </div>
+
+        <!-- 第四天：文化胡同 -->
+        <h2 class="day-title day4">第四天：老北京文化胡同</h2>
+        <div class="spot-item" data-spot="南锣鼓巷">
+            <img class="spot-img" src="lvyou/nanluo.png" alt="南锣鼓巷">
+            <div class="spot-info">
+                <h3>南锣鼓巷</h3>
+                <p>北京最古老的街区之一，保留元代胡同格局，汇聚特色小吃、文创小店与老北京风情。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="什刹海">
+            <img class="spot-img" src="lvyou/shengchahai.png" alt="什刹海">
+            <div class="spot-info">
+                <h3>什刹海</h3>
+                <p>由前海、后海、西海组成，周边有恭王府、烟袋斜街，夜景与老北京市井气息浓郁。</p>
+            </div>
+        </div>
+
+        <!-- 第五天：现代北京 -->
+        <h2 class="day-title day5">第五天：现代北京风貌</h2>
+        <div class="spot-item" data-spot="北京奥林匹克公园">
+            <img class="spot-img" src="lvyou/aoling.png" alt="北京奥林匹克公园">
+            <div class="spot-info">
+                <h3>北京奥林匹克公园</h3>
+                <p>2008年奥运会主场馆区，鸟巢、水立方为标志性建筑，可体验奥运文化与现代建筑之美。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="王府井步行街">
+            <img class="spot-img" src="lvyou/wangjin.png" alt="王府井步行街">
+            <div class="spot-info">
+                <h3>王府井步行街</h3>
+                <p>北京著名商业街区，汇聚老字号、高端商场与特色美食，是感受现代北京商业的核心地。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧高德地图 -->
+    <div id="map-container"></div>
+
+    <!-- 引入高德地图API -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=d2fa9df65dd62f5b3f2d562165aca23c"></script>
+    <script>
+        // 北京景点坐标数据（高德地图十进制经纬度）
+        const spotData = {
+            "天安门广场": { lng: 116.397755, lat: 39.903182, desc: "天安门广场 - 京城核心地标" },
+            "故宫博物院": { lng: 116.397029, lat: 39.917839, desc: "故宫博物院 - 明清皇家宫殿" },
+            "颐和园": { lng: 116.275179, lat: 39.999617, desc: "颐和园 - 中国最大皇家园林" },
+            "天坛公园": { lng: 116.410829, lat: 39.881913, desc: "天坛公园 - 帝王祭天之地" },
+            "八达岭长城": { lng: 116.016802, lat: 40.356188, desc: "八达岭长城 - 明长城精华段" },
+            "明十三陵": { lng: 116.235741, lat: 40.280532, desc: "明十三陵 - 明代皇家陵寝群" },
+            "南锣鼓巷": { lng: 116.402394, lat: 39.937182, desc: "南锣鼓巷 - 老北京胡同代表" },
+            "什刹海": { lng: 116.385121, lat: 39.941893, desc: "什刹海 - 京城水畔风情区" },
+            "北京奥林匹克公园": { lng: 116.393096, lat: 40.009926, desc: "奥林匹克公园 - 现代北京地标" },
+            "王府井步行街": { lng: 116.41242, lat: 39.913399, desc: "王府井 - 北京核心商业街" }
+        };
+
+        // 初始化高德地图（保留原逻辑）
+        let map, currentMarker;
+        function initMap() {
+            // 先加载所需控件插件
+            AMap.plugin(['AMap.ToolBar', 'AMap.ZoomControl'], function() {
+                // 创建地图实例（默认中心点设为北京核心区）
+                map = new AMap.Map('map-container', {
+                    zoom: 11, 
+                    center: [116.40, 39.92], 
+                    resizeEnable: true
+                });
+
+                // 添加可用的控件
+                map.addControl(new AMap.ToolBar());
+                map.addControl(new AMap.ZoomControl({ position: 'RB' }));
+            });
+        }
+
+        // 地图定位到指定景点（保留原逻辑）
+        function locateSpot(spotName) {
+            const spot = spotData[spotName];
+            if (!spot || !map) return;
+
+            // 移除当前标记
+            if (currentMarker) {
+                map.remove(currentMarker);
+            }
+
+            // 地图定位到目标位置
+            map.setCenter([spot.lng, spot.lat]);
+            map.setZoom(15);
+
+            // 创建新标记
+            currentMarker = new AMap.Marker({
+                position: new AMap.LngLat(spot.lng, spot.lat),
+                title: spotName,
+                icon: new AMap.Icon({
+                    size: new AMap.Size(32, 32),
+                    image: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',
+                    imageSize: new AMap.Size(32, 32)
+                })
+            });
+            map.add(currentMarker);
+
+            // 显示信息窗口
+            const infoWindow = new AMap.InfoWindow({
+                content: `<div style="padding: 10px;"><h3 style="margin:0 0 5px 0;font-size:16px;">${spotName}</h3><p style="margin:0;font-size:14px;color:#666;">${spot.desc}</p></div>`,
+                offset: new AMap.Pixel(0, -40)
+            });
+            infoWindow.open(map, currentMarker.getPosition());
+        }
+
+        // 绑定行程项点击事件（保留原逻辑）
+        function bindSpotClick() {
+            const spotItems = document.querySelectorAll('.spot-item');
+            spotItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    spotItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    const spotName = this.dataset.spot;
+                    locateSpot(spotName);
+                });
+            });
+        }
+
+        // 页面加载完成后初始化（保留原逻辑）
+        window.onload = function() {
+            initMap();
+            bindSpotClick();
+
+            // 延迟1秒后默认定位到天安门广场
+            setTimeout(() => {
+                locateSpot('天安门广场');
+                document.querySelector('.spot-item').classList.add('active');
+            }, 1000);
+        };
+    </script>
+</body>
+</html>

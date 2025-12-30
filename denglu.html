@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旅图登录门户</title>
+    <style> 
+        /* 全局基础样式 */
+        body {
+            margin: 0; 
+            padding: 0; 
+            font-family: "微软雅黑", sans-serif;
+            color: #333;
+            min-height: 100vh;
+            /* 添加背景图样式 */
+            background: url('img/beijing.jpg') no-repeat center center fixed;
+            background-size: cover;
+            transition: opacity 0.5s ease; /* 添加页面淡出过渡 */
+        }
+
+        /* 遮罩层 - 半透明模糊，可看清底层页面 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            display: flex; /* 默认显示 */
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 1;
+            transition: opacity 0.4s ease, transform 0.4s ease; /* 延长过渡时间更丝滑 */
+        }
+
+        /* 登录窗口容器 - 半透明模糊，保留可读性 */
+        .login-window {
+            width: 420px;
+            background-color: rgba(44, 44, 44, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+            transform: scale(1);
+            transition: transform 0.4s ease, opacity 0.4s ease; /* 增加opacity过渡 */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 1;
+        }
+
+        /* 关闭按钮样式 */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease;
+            z-index: 10;
+        }
+        .close-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .close-btn::before,
+        .close-btn::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 2px;
+            background-color: #fff;
+        }
+        .close-btn::before { transform: rotate(45deg); }
+        .close-btn::after { transform: rotate(-45deg); }
+
+        /* 登录表单容器 */
+        .login-container {
+            padding: 30px;
+            padding-top: 40px;
+        }
+
+        /* 选项卡样式 */
+        .tab-bar {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(68, 68, 68, 0.5);
+            padding-bottom: 0;
+        }
+        .tab {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .tab.login-active {
+            color: #fff;
+        }
+        .tab.login-active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+        }
+        .tab.register-active {
+            color: #fff;
+        }
+        .tab.register-active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+        }
+        .tab.inactive {
+            color: #ddd;
+        }
+
+        /* 输入框样式 - 优化透明度，保证可读性 */
+        .input-box {
+            width: 100%;
+            height: 45px;
+            background-color: rgba(60, 60, 60, 0.6);
+            border: none;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            padding: 0 15px;
+            color: #fff;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .input-box:focus {
+            outline: none;
+            background-color: rgba(72, 72, 72, 0.7);
+            border-color: rgba(30, 144, 255, 0.5);
+        }
+
+        /* 协议区域 */
+        .agreement {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #eee;
+            margin-bottom: 25px;
+        }
+        .agreement input {
+            margin-right: 8px;
+            width: 14px;
+            height: 14px;
+            accent-color: rgba(30, 144, 255, 0.8);
+        }
+        .agreement a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+        .agreement a:hover {
+            text-decoration: underline;
+        }
+
+        /* 登录按钮 */
+        .login-btn {
+            width: 100%;
+            height: 48px;
+            background-color: rgba(30, 144, 255, 0.8);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .login-btn:hover {
+            background-color: rgba(0, 191, 255, 0.85);
+            transform: translateY(-1px); /* 轻微上浮效果 */
+        }
+        .login-btn:active {
+            transform: translateY(0); /* 点击恢复 */
+        }
+        .login-btn:disabled {
+            background-color: rgba(102, 102, 102, 0.5);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 辅助链接 */
+        .helper-links {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0 30px 0;
+        }
+        .helper-links a {
+            color: #eee;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        .helper-links a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* 其他登录方式 */
+        .other-login {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(68, 68, 68, 0.5);
+        }
+        .other-login-title {
+            font-size: 14px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        .icon-list {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 10px;
+        }
+        .icon img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0.9;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .icon img:hover {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 480px) {
+            .login-window {
+                width: 90%;
+                margin: 0 10px;
+            }
+        }
+
+        /* 新增：页面淡出类 */
+        .page-fade-out {
+            opacity: 0;
+        }
+
+        /* 新增：弹窗缩小淡出类 */
+        .modal-hide {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+    <!-- 模态框遮罩层（默认显示） -->
+    <div class="modal-overlay" id="modalOverlay">
+        <!-- 登录窗口容器 -->
+        <div class="login-window" id="loginWindow">
+            <!-- 关闭按钮 -->
+            <div class="close-btn" id="closeBtn"></div>
+            
+            <div class="login-container">
+                <!-- 选项卡 -->
+                <div class="tab-bar">
+                    <div class="tab login-active" id="loginTab">登录</div>
+                    <div class="tab inactive" id="registerTab">注册</div>
+                </div>
+
+                <!-- 输入框 -->
+                <input type="text" class="input-box" id="accountInput" placeholder="手机号码/账号" />
+                <input type="password" class="input-box" id="passwordInput" placeholder="密码" />
+
+                <!-- 协议勾选 -->
+                <div class="agreement">
+                    <input type="checkbox" id="agreeCheckbox" />
+                    已阅读并同意<a href="#">使用协议</a>和<a href="#">隐私政策</a>
+                </div>
+
+                <!-- 登录按钮 -->
+                <button type="button" class="login-btn" id="loginBtn" disabled>登录</button>
+
+                <!-- 辅助链接 -->
+                <div class="helper-links">
+                    <a href="#">忘记密码</a>
+                    <a href="#">手机号登录</a>
+                </div>
+
+                <!-- 其他登录方式 -->
+                <div class="other-login">
+                    <div class="other-login-title">其他方式登录</div>
+                    <div class="icon-list">
+                        <div class="icon alipay">
+                            <img src="img/alipay.png" alt="支付宝登录" />
+                        </div>
+                        <div class="icon wechat">
+                            <img src="img/wechat.png" alt="微信登录" />
+                        </div>
+                        <div class="icon qq">
+                            <img src="img/qq.jpg" alt="QQ登录" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取核心元素
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const closeBtn = document.getElementById('closeBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const loginWindow = document.getElementById('loginWindow'); // 新增获取登录窗口
+        const accountInput = document.getElementById('accountInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const agreeCheckbox = document.getElementById('agreeCheckbox');
+        const loginBtn = document.getElementById('loginBtn');
+        const body = document.body;
+
+        // 页面加载后锁定滚动（因为弹窗默认显示）
+        body.style.overflow = 'hidden';
+
+        // 新增：平滑跳转函数
+        function smoothRedirect(url) {
+            // 1. 添加页面淡出效果
+            body.classList.add('page-fade-out');
+            // 2. 添加弹窗缩小淡出效果
+            loginWindow.classList.add('modal-hide');
+            modalOverlay.style.opacity = 0;
+            
+            // 3. 延迟跳转，等待动画完成
+            setTimeout(() => {
+                window.location.href = url;
+            }, 500); // 与CSS过渡时间匹配
+        }
+
+        // 关闭弹窗通用方法（不跳转）
+        function closeLoginModal() {
+            loginWindow.classList.add('modal-hide');
+            modalOverlay.style.opacity = 0;
+            
+            setTimeout(() => {
+                modalOverlay.style.display = 'none';
+                body.style.overflow = ''; // 恢复页面滚动
+                
+                // 延迟恢复样式，避免闪屏
+                setTimeout(() => {
+                    // 清空表单
+                    accountInput.value = '';
+                    passwordInput.value = '';
+                    agreeCheckbox.checked = false;
+                    updateLoginButton();
+                    // 恢复选项卡样式
+                    loginTab.classList.add('login-active');
+                    loginTab.classList.remove('inactive');
+                    registerTab.classList.remove('register-active');
+                    registerTab.classList.add('inactive');
+                    // 恢复弹窗样式
+                    loginWindow.classList.remove('modal-hide');
+                    modalOverlay.style.opacity = 1;
+                    body.classList.remove('page-fade-out');
+                }, 600);
+            }, 300);
+        }
+
+        // 关闭按钮点击事件 - 平滑跳转回weidenglu.html
+        closeBtn.onclick = function() {
+            // 直接使用平滑跳转
+            smoothRedirect('weidenglu.html');
+        };
+
+        // 点击遮罩层关闭弹窗（不跳转）
+        modalOverlay.onclick = function(e) {
+            if (e.target === modalOverlay) {
+                closeLoginModal();
+            }
+        };
+
+        // 注册选项卡点击事件 - 平滑跳转到注册页面
+        registerTab.onclick = function() {
+            smoothRedirect('zhuce.html');
+        };
+
+        // 登录选项卡点击事件
+        loginTab.onclick = function() {
+            loginTab.classList.remove('inactive');
+            loginTab.classList.add('login-active');
+            registerTab.classList.remove('register-active');
+            registerTab.classList.add('inactive');
+        };
+
+        // 表单验证逻辑
+        function updateLoginButton() {
+            const isAccountFilled = accountInput.value.trim() !== '';
+            const isPasswordFilled = passwordInput.value.trim() !== '';
+            const isAgreeChecked = agreeCheckbox.checked;
+            
+            loginBtn.disabled = !(isAccountFilled && isPasswordFilled && isAgreeChecked);
+        }
+        
+        // 绑定输入事件
+        accountInput.addEventListener('input', updateLoginButton);
+        passwordInput.addEventListener('input', updateLoginButton);
+        agreeCheckbox.addEventListener('change', updateLoginButton);
+        
+        // 初始化按钮状态
+        updateLoginButton();
+        
+        // 登录按钮点击事件：验证通过后平滑跳转
+        loginBtn.onclick = function() {
+            if (!this.disabled) {
+                const account = accountInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                // 模拟登录验证
+                if (account && password) {
+                    alert(`登录成功！即将跳转到首页`);
+                    // 使用平滑跳转
+                    smoothRedirect('yidenglu.html');
+                } else {
+                    alert("账号或密码不能为空");
+                }
+            }
+        };
+
+        // 第三方登录图标点击事件
+        const otherLoginIcons = document.querySelectorAll('.icon img');
+        otherLoginIcons.forEach(icon => {
+            icon.addEventListener('click', function() {
+                const loginType = this.alt || '第三方';
+                alert(`${loginType}登录暂未开放，敬请期待！`);
+            });
+        });
+
+        // 辅助链接点击事件
+        const helperLinks = document.querySelectorAll('.helper-links a');
+        helperLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert(`${this.textContent}功能暂未开放！`);
+            });
+        });
+
+        // 按ESC键关闭弹窗（不跳转）
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalOverlay.style.display !== 'none') {
+                closeLoginModal();
+            }
+        });
+    </script>
+</body>
+</html>

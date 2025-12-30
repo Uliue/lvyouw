@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京旅游指南 - 古都风韵，盛世京华</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 英雄区 */
+        .hero {
+            height: 80vh;
+            /* 本地图片替换提示：将下方路径改为你的本地图片路径 */
+            background: url('beijing/lunbo1.png') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #ff7a45;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+        
+        /* 容器样式 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 简介部分 */
+        .intro {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .intro h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        .intro-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .intro-img img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* 热门景点 */
+        .attractions {
+            padding: 4rem 0;
+            background-color: #f5f5f5;
+        }
+        
+        .attractions h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover .card-img img {
+            transform: scale(1.1);
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+        
+        .card-content p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        /* 出行方式 */
+        .transport {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .transport h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        .transport-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .transport-item {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .transport-item i {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+        
+        .transport-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        /* 美食推荐 */
+        .food {
+            padding: 4rem 0;
+            background-color: #f5f5f5;
+        }
+        
+        .food h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            font-size: 1.1rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .intro-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .intro h2, .attractions h2, .transport h2, .food h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 英雄区 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>北京 · 古都京华</h1>
+            <p>三千年建城史，八百年建都史，北京这座城市既有皇城根下的古韵风华，也有国际都市的现代繁华，古今交融，气象万千。</p>
+            <a href="#attractions" class="btn">探索北京</a>
+        </div>
+    </section>
+
+    <!-- 城市简介 -->
+    <section class="intro" id="intro">
+        <div class="container">
+            <h2>北京简介</h2>
+            <div class="intro-content">
+                <div class="intro-text">
+                    <p>北京，简称“京”，是中华人民共和国首都、直辖市、国家中心城市、超大城市，国务院批复确定的中国政治中心、文化中心、国际交往中心、科技创新中心。</p>
+                    <br>
+                    <p>北京有着3000余年的建城史和860余年的建都史，曾为辽、金、元、明、清五朝帝都，拥有众多历史名胜和人文景观，是全球拥有世界文化遗产最多的城市。</p>
+                    <br>
+                    <p>作为国际化大都市，北京兼具古典与现代之美，既有故宫、长城等世界文化遗产，也有CBD、中关村等现代化地标，是中外游客了解中国的重要窗口。</p>
+                </div>
+                <div class="intro-img">
+                    <!-- 本地图片替换提示：将下方路径改为你的本地图片路径 -->
+                    <img src="beijing/lunbo.png" alt="北京城市风光">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 热门景点 -->
+    <section class="attractions" id="attractions">
+        <div class="container">
+            <h2>热门景点</h2>
+            <div class="cards">
+                <!-- 故宫 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/bowuyuan.png" alt="故宫">
+                    </div>
+                    <div class="card-content">
+                        <h3>故宫博物院</h3>
+                        <p>旧称紫禁城，是明清两代的皇家宫殿，世界上现存规模最大、保存最为完整的木质结构古建筑之一。拥有70余座宫殿、9000余间房屋，馆藏文物超180万件。</p>
+                        <p><strong>门票：</strong>旺季60元，淡季40元（需提前预约）</p>
+                    </div>
+                </div>
+                
+                <!-- 八达岭长城 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/changc.png" alt="八达岭长城">
+                    </div>
+                    <div class="card-content">
+                        <h3>八达岭长城</h3>
+                        <p>明长城中保存最好、最具代表性的地段，海拔高达1015米，城墙高7.8米，顶宽5米，可乘缆车上下，是中外游客必打卡的地标。</p>
+                        <p><strong>门票：</strong>旺季40元，淡季35元</p>
+                    </div>
+                </div>
+                
+                <!-- 颐和园 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/yiheyuan.png" alt="颐和园">
+                    </div>
+                    <div class="card-content">
+                        <h3>颐和园</h3>
+                        <p>中国清朝时期皇家园林，前身为清漪园，是保存最完整的一座皇家行宫御苑，被誉为“皇家园林博物馆”，由昆明湖、万寿山和众多亭台楼阁组成。</p>
+                        <p><strong>门票：</strong>旺季30元，淡季20元（联票60/50元）</p>
+                    </div>
+                </div>
+                
+                <!-- 天坛公园 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/tiantangongyuan.png" alt="天坛公园">
+                    </div>
+                    <div class="card-content">
+                        <h3>天坛公园</h3>
+                        <p>明清两代皇帝祭天、祈谷和祈雨的场所，以严谨的建筑布局、奇特的建筑结构和瑰丽的建筑装饰著称，祈年殿是其核心地标。</p>
+                        <p><strong>门票：</strong>旺季15元，淡季10元（联票35/30元）</p>
+                    </div>
+                </div>
+                
+                <!-- 南锣鼓巷 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/nanqiang.png" alt="南锣鼓巷">
+                    </div>
+                    <div class="card-content">
+                        <h3>南锣鼓巷</h3>
+                        <p>北京最古老的街区之一，全长787米，保存了元代胡同院落肌理，是感受老北京胡同文化、品尝特色小吃、购买文创产品的好去处。</p>
+                        <p><strong>门票：</strong>免费</p>
+                    </div>
+                </div>
+                
+                <!-- 奥林匹克公园 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/aolin.png" alt="奥林匹克公园">
+                    </div>
+                    <div class="card-content">
+                        <h3>奥林匹克公园</h3>
+                        <p>2008年北京奥运会主赛区，拥有鸟巢（国家体育场）、水立方（国家游泳中心）等标志性建筑，是北京现代城市风貌的代表。</p>
+                        <p><strong>门票：</strong>园区免费，鸟巢内部参观50元</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 出行方式 -->
+    <section class="transport" id="transport">
+        <div class="container">
+            <h2>出行方式</h2>
+            <div class="transport-content">
+                <!-- 飞机 -->
+                <div class="transport-item">
+                    <i class="fas fa-plane"></i>
+                    <h3>飞机</h3>
+                    <p>北京有首都国际机场和大兴国际机场两大航空枢纽，大兴机场距市中心约46公里，首都机场约25公里，均有机场快线、大巴、出租车接驳。</p>
+                </div>
+                
+                <!-- 高铁/火车 -->
+                <div class="transport-item">
+                    <i class="fas fa-train"></i>
+                    <h3>高铁/火车</h3>
+                    <p>北京有北京站、北京西站、北京南站、北京北站等枢纽，高铁网络覆盖全国，到天津30分钟，到上海4.5小时，到广州8小时。</p>
+                </div>
+                
+                <!-- 地铁 -->
+                <div class="transport-item">
+                    <i class="fas fa-subway"></i>
+                    <h3>地铁</h3>
+                    <p>北京地铁已开通27条线路，覆盖全城，景点基本都有地铁可达，票价3-10元，支持亿通行APP、一卡通、支付宝/微信乘车码。</p>
+                </div>
+                
+                <!-- 公交/出租车 -->
+                <div class="transport-item">
+                    <i class="fas fa-bus"></i>
+                    <h3>公交/出租车</h3>
+                    <p>公交线路超1000条，票价1-10元（公交卡/APP5折）。出租车起步价13元/3公里，网约车普及，天安门等核心区限行需注意。</p>
+                </div>
+                
+                <!-- 共享单车/电动车 -->
+                <div class="transport-item">
+                    <i class="fas fa-bicycle"></i>
+                    <h3>共享单车/电动车</h3>
+                    <p>北京中心城区共享单车密集，适合短距离出行，二环内老胡同骑行体验佳，部分景区（如什刹海）有特色自行车租赁。</p>
+                </div>
+                
+                <!-- 旅游专线 -->
+                <div class="transport-item">
+                    <i class="fas fa-bus-alt"></i>
+                    <h3>旅游专线</h3>
+                    <p>北京有多条旅游公交专线，如德胜门877路直达八达岭长城（12元），前门旅游专线覆盖各大景区，方便快捷且性价比高。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 美食推荐 -->
+    <section class="food" id="food">
+        <div class="container">
+            <h2>特色美食</h2>
+            <div class="cards">
+                <!-- 北京烤鸭 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/kaoya.png" alt="北京烤鸭">
+                    </div>
+                    <div class="card-content">
+                        <h3>北京烤鸭</h3>
+                        <p>北京最具代表性的美食，以果木炭火烤制，皮脆肉嫩，片鸭蘸甜面酱配葱丝、黄瓜卷荷叶饼食用，全聚德、四季民福为知名品牌。</p>
+                    </div>
+                </div>
+                
+                <!-- 涮羊肉 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/yangr.png" alt="涮羊肉">
+                    </div>
+                    <div class="card-content">
+                        <h3>涮羊肉</h3>
+                        <p>老北京冬季特色美食，以铜锅炭火清汤涮煮内蒙古羔羊肉，蘸麻酱、韭菜花、腐乳等调料，东来顺、聚宝源为老字号。</p>
+                    </div>
+                </div>
+                
+                <!-- 炸酱面 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/zhajiangmian.png" alt="炸酱面">
+                    </div>
+                    <div class="card-content">
+                        <h3>炸酱面</h3>
+                        <p>老北京家常面食，以五花肉丁加黄酱/甜面酱炸制炸酱，搭配黄瓜、豆芽、青豆等“面码”，面条筋道，酱香浓郁。</p>
+                    </div>
+                </div>
+                
+                <!-- 爆肚 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/baodu.png" alt="爆肚">
+                    </div>
+                    <div class="card-content">
+                        <h3>爆肚</h3>
+                        <p>北京清真特色小吃，将牛/羊肚按部位分割，沸水焯熟后蘸麻酱料食用，讲究火候和刀工，门框胡同爆肚冯为百年老店。</p>
+                    </div>
+                </div>
+                
+                <!-- 豆汁儿焦圈 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/dozhi.png" alt="豆汁儿焦圈">
+                    </div>
+                    <div class="card-content">
+                        <h3>豆汁儿焦圈</h3>
+                        <p>老北京经典早餐，豆汁儿由绿豆发酵制成，口感酸馊，配咸菜丝食用，焦圈酥脆，是体验老北京风味的特色小吃。</p>
+                    </div>
+                </div>
+                
+                <!-- 驴打滚 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="beijing/dagun.png" alt="驴打滚">
+                    </div>
+                    <div class="card-content">
+                        <h3>驴打滚</h3>
+                        <p>北京传统小吃，以糯米面裹红豆沙，滚上黄豆面制成，口感软糯香甜，因制作过程如驴打滚得名，护国寺小吃、锦芳为老字号。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2025 北京旅游指南 | 古都风韵，盛世京华</p>
+                <br>
+                <p>温馨提示：故宫、长城等热门景点需提前预约，北京早晚温差大，出行请备齐衣物，文明旅游，爱护文物</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>川渝环线七日游攻略</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;}
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 左侧行程栏 */
+        .itinerary {
+            width: 35%;
+            height: 100%;
+            background: white;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        }
+        .day-title {
+            margin: 20px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #165DFF;
+            font-size: 20px;
+            color: #333;
+        }
+        .day-title.day2 {border-color: #00B42A;}
+        .day-title.day3 {border-color: #FF7D00;}
+        .day-title.day4 {border-color: #975FE4;}
+        .day-title.day5 {border-color: #F53F3F;}
+        .day-title.day6 {border-color: #0FC6C2;}
+        .day-title.day7 {border-color: #FF9A2E;}
+        
+        .spot-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+        .spot-item:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-color: #ddd;
+        }
+        .spot-item.active {
+            background-color: #e8f4ff;
+            border-color: #165DFF;
+        }
+        .spot-img {
+            width: 100px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .spot-info h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .spot-info p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 右侧高德地图 */
+        #map-container {
+            width: 65%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧行程栏 -->
+    <div class="itinerary">
+        <!-- 第一天：成都核心 -->
+        <h2 class="day-title">第一天：成都核心体验</h2>
+        <div class="spot-item" data-spot="宽窄巷子">
+            <!-- 本地图片路径：请将对应图片放到 lvyou 文件夹 -->
+            <img class="spot-img" src="chengdulvyou/kuanzhai.png" alt="宽窄巷子">
+            <div class="spot-info">
+                <h3>宽窄巷子</h3>
+                <p>成都老牌网红街区，由宽巷、窄巷、井巷组成，体验老成都街巷文化与特色小吃。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="锦里">
+            <img class="spot-img" src="chengdulvyou/jingli.png" alt="锦里">
+            <div class="spot-info">
+                <h3>锦里</h3>
+                <p>三国文化主题商业街，毗邻武侯祠，夜景绝美，可品尝三大炮、蛋烘糕等成都小吃。</p>
+            </div>
+        </div>
+
+        <!-- 第二天：成都周边 -->
+        <h2 class="day-title day2">第二天：成都周边清幽</h2>
+        <div class="spot-item" data-spot="都江堰">
+            <img class="spot-img" src="chengdulvyou/dujiangyan.png" alt="都江堰">
+            <div class="spot-info">
+                <h3>都江堰</h3>
+                <p>世界文化遗产，两千多年的水利工程奇迹，至今仍发挥防洪灌溉作用。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="青城山">
+            <img class="spot-img" src="chengdulvyou/qingchengshan.png" alt="青城山">
+            <div class="spot-info">
+                <h3>青城山</h3>
+                <p>中国四大道教名山之一，分前山和后山，素有“青城天下幽”的美誉。</p>
+            </div>
+        </div>
+
+        <!-- 第三天：乐山美食 -->
+        <h2 class="day-title day3">第三天：乐山美食与大佛</h2>
+        <div class="spot-item" data-spot="乐山大佛">
+            <img class="spot-img" src="chengdulvyou/leshandaf.png" alt="乐山大佛">
+            <div class="spot-info">
+                <h3>乐山大佛</h3>
+                <p>世界最大的石刻弥勒佛坐像，依凌云山岩壁凿刻，三江汇流处气势恢宏。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="张公桥美食街">
+            <img class="spot-img" src="chengdulvyou/zhanggongqiao.png" alt="张公桥美食街">
+            <div class="spot-info">
+                <h3>张公桥美食街</h3>
+                <p>乐山美食聚集地，跷脚牛肉、钵钵鸡、甜皮鸭等特色美食一网打尽。</p>
+            </div>
+        </div>
+
+        <!-- 第四天：峨眉山 -->
+        <h2 class="day-title day4">第四天：峨眉仙山朝圣</h2>
+        <div class="spot-item" data-spot="峨眉山">
+            <img class="spot-img" src="chengdulvyou/ems.png" alt="峨眉山">
+            <div class="spot-info">
+                <h3>峨眉山</h3>
+                <p>中国四大佛教名山之一，普贤菩萨道场，金顶云海、佛光为标志性景观。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="金顶">
+            <img class="spot-img" src="chengdulvyou/jinding.png" alt="金顶">
+            <div class="spot-info">
+                <h3>金顶</h3>
+                <p>峨眉山主峰，矗立48米高的普贤菩萨金像，是观云海、日出、佛光的最佳位置。</p>
+            </div>
+        </div>
+
+        <!-- 第五天：重庆主城 -->
+        <h2 class="day-title day5">第五天：重庆魔幻都市</h2>
+        <div class="spot-item" data-spot="洪崖洞">
+            <img class="spot-img" src="chengdulvyou/hongyadong.png" alt="洪崖洞">
+            <div class="spot-info">
+                <h3>洪崖洞</h3>
+                <p>重庆地标性建筑，吊脚楼风格的民俗风貌区，夜景酷似“千与千寻”汤屋。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="解放碑">
+            <img class="spot-img" src="chengdulvyou/jiefangbei.png" alt="解放碑">
+            <div class="spot-info">
+                <h3>解放碑</h3>
+                <p>重庆CBD核心，抗战胜利纪功碑暨人民解放纪念碑，周边是重庆最繁华的商圈。</p>
+            </div>
+        </div>
+
+        <!-- 第六天：重庆自然 -->
+        <h2 class="day-title day6">第六天：重庆自然奇观</h2>
+        <div class="spot-item" data-spot="武隆天生三桥">
+            <img class="spot-img" src="chengdulvyou/wulong.png" alt="武隆天生三桥">
+            <div class="spot-info">
+                <h3>武隆天生三桥</h3>
+                <p>世界自然遗产，喀斯特地貌奇观，《满城尽带黄金甲》《变形金刚4》取景地。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="龙水峡地缝">
+            <img class="spot-img" src="chengdulvyou/longshui.png" alt="龙水峡地缝">
+            <div class="spot-info">
+                <h3>龙水峡地缝</h3>
+                <p>武隆核心景点之一，峡谷幽深，瀑布飞泻，是喀斯特地貌的极致体现。</p>
+            </div>
+        </div>
+
+        <!-- 第七天：重庆人文 -->
+        <h2 class="day-title day7">第七天：重庆人文怀旧</h2>
+        <div class="spot-item" data-spot="磁器口古镇">
+            <img class="spot-img" src="chengdulvyou/guzhen.png" alt="磁器口古镇">
+            <div class="spot-info">
+                <h3>磁器口古镇</h3>
+                <p>重庆老牌古镇，千年巴渝文化缩影，陈麻花、古镇鸡杂是必尝美食。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="长江索道">
+            <img class="spot-img" src="chengdulvyou/changjiang.png" alt="长江索道">
+            <div class="spot-info">
+                <h3>长江索道</h3>
+                <p>重庆“空中公交车”，跨长江连接渝中和南岸，体验360°俯瞰江景的独特视角。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧高德地图 -->
+    <div id="map-container"></div>
+
+    <!-- 引入高德地图API -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=d2fa9df65dd62f5b3f2d562165aca23c"></script>
+    <script>
+        // 川渝景点坐标数据（高德地图十进制经纬度）
+        const spotData = {
+            "宽窄巷子": { lng: 104.053307, lat: 30.663869, desc: "宽窄巷子 - 老成都街巷文化" },
+            "锦里": { lng: 104.049828, lat: 30.645994, desc: "锦里 - 三国文化美食街" },
+            "都江堰": { lng: 103.610529, lat: 31.003363, desc: "都江堰 - 千年水利工程" },
+            "青城山": { lng: 103.563817, lat: 30.9044, desc: "青城山 - 青城天下幽" },
+            "乐山大佛": { lng: 103.772817, lat: 29.549235, desc: "乐山大佛 - 世界最大石刻佛像" },
+            "张公桥美食街": { lng: 103.970525, lat: 30.317805, desc: "张公桥 - 乐山美食核心区" },
+            "峨眉山": { lng: 103.339087, lat: 29.5472, desc: "峨眉山 - 四大佛教名山之一" },
+            "金顶": { lng: 104.078064, lat: 30.634882, desc: "金顶 - 峨眉山核心景观" },
+            "洪崖洞": { lng: 116.39838, lat: 39.963176, desc: "洪崖洞 - 重庆魔幻夜景地标" },
+            "解放碑": { lng: 103.620442, lat: 30.499688, desc: "解放碑 - 重庆CBD核心" },
+            "武隆天生三桥": { lng: 107.804818, lat: 29.433682, desc: "天生三桥 - 喀斯特地貌奇观" },
+            "龙水峡地缝": { lng: 107.793, lat: 29.398385, desc: "龙水峡地缝 - 峡谷自然奇观" },
+            "磁器口古镇": { lng: 106.449705, lat: 29.581184, desc: "磁器口 - 重庆千年古镇" },
+            "长江索道": { lng: 106.593998, lat: 29.552516, desc: "长江索道 - 重庆空中交通" }
+        };
+
+        // 初始化高德地图（保留原逻辑，适配川渝范围）
+        let map, currentMarker;
+        function initMap() {
+            // 先加载所需控件插件
+            AMap.plugin(['AMap.ToolBar', 'AMap.ZoomControl'], function() {
+                // 创建地图实例（默认中心点设为成都核心区）
+                map = new AMap.Map('map-container', {
+                    zoom: 8, 
+                    center: [104.06, 30.67], 
+                    resizeEnable: true
+                });
+
+                // 添加可用的控件
+                map.addControl(new AMap.ToolBar());
+                map.addControl(new AMap.ZoomControl({ position: 'RB' }));
+            });
+        }
+
+        // 地图定位到指定景点（保留原逻辑）
+        function locateSpot(spotName) {
+            const spot = spotData[spotName];
+            if (!spot || !map) return;
+
+            // 移除当前标记
+            if (currentMarker) {
+                map.remove(currentMarker);
+            }
+
+            // 地图定位到目标位置（川渝跨度大，定位后缩放至15级）
+            map.setCenter([spot.lng, spot.lat]);
+            map.setZoom(15);
+
+            // 创建新标记
+            currentMarker = new AMap.Marker({
+                position: new AMap.LngLat(spot.lng, spot.lat),
+                title: spotName,
+                icon: new AMap.Icon({
+                    size: new AMap.Size(32, 32),
+                    image: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',
+                    imageSize: new AMap.Size(32, 32)
+                })
+            });
+            map.add(currentMarker);
+
+            // 显示信息窗口
+            const infoWindow = new AMap.InfoWindow({
+                content: `<div style="padding: 10px;"><h3 style="margin:0 0 5px 0;font-size:16px;">${spotName}</h3><p style="margin:0;font-size:14px;color:#666;">${spot.desc}</p></div>`,
+                offset: new AMap.Pixel(0, -40)
+            });
+            infoWindow.open(map, currentMarker.getPosition());
+        }
+
+        // 绑定行程项点击事件（保留原逻辑）
+        function bindSpotClick() {
+            const spotItems = document.querySelectorAll('.spot-item');
+            spotItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    spotItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    const spotName = this.dataset.spot;
+                    locateSpot(spotName);
+                });
+            });
+        }
+
+        // 页面加载完成后初始化（保留原逻辑）
+        window.onload = function() {
+            initMap();
+            bindSpotClick();
+
+            // 延迟1秒后默认定位到宽窄巷子
+            setTimeout(() => {
+                locateSpot('宽窄巷子');
+                document.querySelector('.spot-item').classList.add('active');
+            }, 1000);
+        };
+    </script>
+</body>
+</html>

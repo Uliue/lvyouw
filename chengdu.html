@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成都旅游指南 - 天府之国，烟火蓉城</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 英雄区 */
+        .hero {
+            height: 80vh;
+            /* 本地图片替换提示：将下方路径改为你的本地图片路径 */
+            background: url('chengdu/lunbo1.png') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #ff7a45;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+        
+        /* 容器样式 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 简介部分 */
+        .intro {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .intro h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        .intro-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .intro-img img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* 热门景点 */
+        .attractions {
+            padding: 4rem 0;
+            background-color: #f5f5f5;
+        }
+        
+        .attractions h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover .card-img img {
+            transform: scale(1.1);
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+        
+        .card-content p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        /* 出行方式 */
+        .transport {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .transport h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        .transport-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .transport-item {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .transport-item i {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+        
+        .transport-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        /* 美食推荐 */
+        .food {
+            padding: 4rem 0;
+            background-color: #f5f5f5;
+        }
+        
+        .food h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            font-size: 1.1rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .intro-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .intro h2, .attractions h2, .transport h2, .food h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 英雄区 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>成都 · 烟火蓉城</h1>
+            <p>天府之国，一座来了就不想走的城市。这里有雪山下的公园城市风貌，有麻辣鲜香的市井美食，更有巴适安逸的生活节奏。</p>
+            <a href="#attractions" class="btn">探索成都</a>
+        </div>
+    </section>
+
+    <!-- 城市简介 -->
+    <section class="intro" id="intro">
+        <div class="container">
+            <h2>成都简介</h2>
+            <div class="intro-content">
+                <div class="intro-text">
+                    <p>成都，简称“蓉”，别称蓉城、锦城，是四川省省会、副省级市、超大城市、成渝地区双城经济圈核心城市，国务院批复确定的中国西部地区重要的中心城市。</p>
+                    <br>
+                    <p>成都是古蜀文明发祥地，拥有三千余年的建城史，先后为蜀汉、前蜀、后蜀等政权的都城，是中国十大古都之一。成都自古享有“天府之国”的美誉，物产丰富，人文荟萃。</p>
+                    <br>
+                    <p>如今的成都既是国家级历史文化名城，也是中国新一线城市之首，兼具熊猫文化、三国文化、美食文化和现代都市魅力，是中国最具幸福感的城市之一。</p>
+                </div>
+                <div class="intro-img">
+                    <!-- 本地图片替换提示：将下方路径改为你的本地图片路径 -->
+                    <img src="chengdu/lunbo.png" alt="成都城市风光">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 热门景点 -->
+    <section class="attractions" id="attractions">
+        <div class="container">
+            <h2>热门景点</h2>
+            <div class="cards">
+                <!-- 成都大熊猫繁育研究基地 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/daxiongmao.png" alt="大熊猫基地">
+                    </div>
+                    <div class="card-content">
+                        <h3>大熊猫繁育研究基地</h3>
+                        <p>全球最大的大熊猫保护研究机构，可近距离观赏大熊猫、小熊猫的日常活动，幼年熊猫馆是人气最高的区域，建议上午前往观看熊猫进食。</p>
+                        <p><strong>门票：</strong>55元</p>
+                    </div>
+                </div>
+                
+                <!-- 锦里古街 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/jinligujie.png" alt="锦里古街">
+                    </div>
+                    <div class="card-content">
+                        <h3>锦里古街</h3>
+                        <p>依托武侯祠而建的三国文化仿古街区，全长550米，红灯笼高悬，汇集了成都特色小吃和手工艺品，夜晚灯火璀璨，极具巴蜀风情。</p>
+                        <p><strong>门票：</strong>免费</p>
+                    </div>
+                </div>
+                
+                <!-- 宽窄巷子 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/kuanzhai.png" alt="宽窄巷子">
+                    </div>
+                    <div class="card-content">
+                        <h3>宽窄巷子</h3>
+                        <p>由宽巷子、窄巷子、井巷子组成的清代民居建筑群，是成都老城区的缩影，融合了老成都的市井生活与现代文创、美食体验。</p>
+                        <p><strong>门票：</strong>免费</p>
+                    </div>
+                </div>
+                
+                <!-- 武侯祠 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/wuho.png" alt="武侯祠">
+                    </div>
+                    <div class="card-content">
+                        <h3>武侯祠</h3>
+                        <p>中国唯一的君臣合祀祠庙，纪念诸葛亮和刘备，祠内有三国文化遗迹、红墙竹影等经典景观，是三国文化爱好者的必打卡地。</p>
+                        <p><strong>门票：</strong>50元</p>
+                    </div>
+                </div>
+                
+                <!-- 杜甫草堂 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/dufu.png" alt="杜甫草堂">
+                    </div>
+                    <div class="card-content">
+                        <h3>杜甫草堂</h3>
+                        <p>诗圣杜甫流寓成都时的故居，现为集古典园林、诗歌文化于一体的博物馆，亭台楼阁掩映在翠竹苍柏之间，充满诗意。</p>
+                        <p><strong>门票：</strong>50元</p>
+                    </div>
+                </div>
+                
+                <!-- 春熙路/太古里 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/taiguli.png" alt="春熙路太古里">
+                    </div>
+                    <div class="card-content">
+                        <h3>春熙路/太古里</h3>
+                        <p>成都核心商圈，春熙路是百年商业街，太古里以川西民居风格融合现代商业，是购物、打卡、体验成都都市生活的核心区域。</p>
+                        <p><strong>门票：</strong>免费</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 出行方式 -->
+    <section class="transport" id="transport">
+        <div class="container">
+            <h2>出行方式</h2>
+            <div class="transport-content">
+                <!-- 飞机 -->
+                <div class="transport-item">
+                    <i class="fas fa-plane"></i>
+                    <h3>飞机</h3>
+                    <p>成都有双流国际机场和天府国际机场两大枢纽，双流机场距市区约16公里，天府机场约50公里，均有机场快线、地铁、大巴接驳。</p>
+                </div>
+                
+                <!-- 高铁/火车 -->
+                <div class="transport-item">
+                    <i class="fas fa-train"></i>
+                    <h3>高铁/火车</h3>
+                    <p>成都有成都东站、成都南站、成都西站等枢纽，高铁到重庆1.5小时，到西安3小时，到贵阳3.5小时，是西南高铁核心枢纽。</p>
+                </div>
+                
+                <!-- 地铁 -->
+                <div class="transport-item">
+                    <i class="fas fa-subway"></i>
+                    <h3>地铁</h3>
+                    <p>成都地铁已开通13条线路，覆盖主城区及主要景点，大熊猫基地、宽窄巷子、春熙路等均有地铁可达，票价2-10元，支持天府通/支付宝乘车。</p>
+                </div>
+                
+                <!-- 公交/出租车 -->
+                <div class="transport-item">
+                    <i class="fas fa-bus"></i>
+                    <h3>公交/出租车</h3>
+                    <p>公交线路覆盖全城，票价1-2元，快速公交（BRT）便捷高效。出租车起步价9元/2公里，网约车普及，市区出行性价比高。</p>
+                </div>
+                
+                <!-- 共享单车/电动车 -->
+                <div class="transport-item">
+                    <i class="fas fa-bicycle"></i>
+                    <h3>共享单车/电动车</h3>
+                    <p>成都被誉为“骑行友好城市”，主城区共享单车密集，锦江边、武侯祠周边骑行体验佳，扫码即可解锁，短途出行灵活便捷。</p>
+                </div>
+                
+                <!-- 景区直通车 -->
+                <div class="transport-item">
+                    <i class="fas fa-bus-alt"></i>
+                    <h3>景区直通车</h3>
+                    <p>成都有官方景区直通车，覆盖大熊猫基地、都江堰、青城山等景点，宽窄巷子、春熙路均有乘车点，票价10-30元，直达景区无需换乘。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 美食推荐 -->
+    <section class="food" id="food">
+        <div class="container">
+            <h2>特色美食</h2>
+            <div class="cards">
+                <!-- 火锅 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/huog.png" alt="成都火锅">
+                    </div>
+                    <div class="card-content">
+                        <h3>成都火锅</h3>
+                        <p>成都美食的灵魂，以牛油红锅为特色，麻辣鲜香，食材丰富，毛肚、鸭肠、黄喉、脑花是必点，蜀大侠、大龙燚、海底捞为知名品牌。</p>
+                    </div>
+                </div>
+                
+                <!-- 串串香 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/chaunchuanxiang.png" alt="串串香">
+                    </div>
+                    <div class="card-content">
+                        <h3>串串香</h3>
+                        <p>成都市井美食代表，将食材穿成竹签，自选自煮，红油锅麻辣过瘾，清汤锅鲜香醇厚，小郡肝、牛肉、掌中宝是经典菜品，马路边边、袁记为老字号。</p>
+                    </div>
+                </div>
+                
+                <!-- 担担面 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/dandanmian.png" alt="担担面">
+                    </div>
+                    <div class="card-content">
+                        <h3>担担面</h3>
+                        <p>成都经典小吃，因早年挑担叫卖得名，细面配上芽菜肉末臊子，加红油、花生碎、葱花，麻辣鲜香，一口下去回味无穷。</p>
+                    </div>
+                </div>
+                
+                <!-- 龙抄手 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/longchaosho.png" alt="龙抄手">
+                    </div>
+                    <div class="card-content">
+                        <h3>龙抄手</h3>
+                        <p>成都特色馄饨，皮薄馅嫩，汤料鲜美，分为原汤、红油、海味等口味，龙抄手总店的红油抄手是招牌，是成都早餐的经典选择。</p>
+                    </div>
+                </div>
+                
+                <!-- 钟水饺 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/shuijiao.png" alt="钟水饺">
+                    </div>
+                    <div class="card-content">
+                        <h3>钟水饺</h3>
+                        <p>成都老字号小吃，皮薄馅嫩，不蘸汤直接淋红油调料，甜中带辣，蒜香浓郁，与北方水饺风味迥异，是川味饺子的代表。</p>
+                    </div>
+                </div>
+                
+                <!-- 蛋烘糕 -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="chengdu/danghonggao.png" alt="蛋烘糕">
+                    </div>
+                    <div class="card-content">
+                        <h3>蛋烘糕</h3>
+                        <p>成都街头经典小吃，用鸡蛋、面粉、红糖烤制成薄饼，可夹甜馅（红糖、芝麻、花生）或咸馅（芽菜肉末、麻辣牛肉），现烤现吃，香甜酥脆。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2025 成都旅游指南 | 天府之国，烟火蓉城</p>
+                <br>
+                <p>温馨提示：大熊猫基地需提前预约，成都夏季多雨冬季温润，吃火锅可根据自身接受度选择微辣/中辣，文明旅游，享受巴适生活</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

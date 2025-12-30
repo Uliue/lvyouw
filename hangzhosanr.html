@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杭州三日游攻略</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;}
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 左侧行程栏 */
+        .itinerary {
+            width: 35%;
+            height: 100%;
+            background: white;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        }
+        .day-title {
+            margin: 20px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #165DFF;
+            font-size: 20px;
+            color: #333;
+        }
+        .day-title.day2 {border-color: #00B42A;}
+        .day-title.day3 {border-color: #FF7D00;}
+        
+        .spot-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+        .spot-item:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-color: #ddd;
+        }
+        .spot-item.active {
+            background-color: #e8f4ff;
+            border-color: #165DFF;
+        }
+        .spot-img {
+            width: 100px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .spot-info h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .spot-info p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 右侧高德地图 */
+        #map-container {
+            width: 65%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧行程栏 -->
+    <div class="itinerary">
+        <!-- 第一天 -->
+        <h2 class="day-title">第一天：西湖环湖</h2>
+        <div class="spot-item" data-spot="断桥残雪">
+            <!-- 本地图片路径：请将断桥残雪的图片命名为 duanqiao.jpg 放到 lvyou 文件夹 -->
+            <img class="spot-img" src="lvyou/duanqiaocanxue.png" alt="断桥残雪">
+            <div class="spot-info">
+                <h3>断桥残雪</h3>
+                <p>西湖十景之一，冬雪时桥面若隐若现于湖面，是西湖标志性景观。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="雷峰塔">
+            <img class="spot-img" src="lvyou/leifengta.png" alt="雷峰塔">
+            <div class="spot-info">
+                <h3>雷峰塔</h3>
+                <p>登塔可360度俯瞰西湖全景，因《白蛇传》闻名，夜景尤为壮观。</p>
+            </div>
+        </div>
+
+        <!-- 第二天 -->
+        <h2 class="day-title day2">第二天：灵隐龙井</h2>
+        <div class="spot-item" data-spot="灵隐寺">
+            <img class="spot-img" src="lvyou/lingyins.png" alt="灵隐寺">
+            <div class="spot-info">
+                <h3>灵隐寺</h3>
+                <p>东晋古刹，杭州最早的名刹，环境清幽，香火鼎盛，禅意浓厚。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="龙井村">
+            <img class="spot-img" src="lvyou/longjingcun.png" alt="龙井村">
+            <div class="spot-info">
+                <h3>龙井村</h3>
+                <p>西湖龙井产地，村内有大片茶园，可品尝正宗龙井茶、体验采茶。</p>
+            </div>
+        </div>
+
+        <!-- 第三天 -->
+        <h2 class="day-title day3">第三天：宋城西溪</h2>
+        <div class="spot-item" data-spot="宋城">
+            <img class="spot-img" src="lvyou/songc.png" alt="宋城">
+            <div class="spot-info">
+                <h3>宋城</h3>
+                <p>大型宋文化主题公园，《宋城千古情》演出是核心看点，还原宋代风貌。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="西溪湿地">
+            <img class="spot-img" src="lvyou/shidi.png" alt="西溪湿地">
+            <div class="spot-info">
+                <h3>西溪湿地</h3>
+                <p>国家湿地公园，以“一曲溪流一曲烟”的水乡风光著称，适合乘船游览。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧高德地图 -->
+    <div id="map-container"></div>
+
+    <!-- 引入高德地图API -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=d2fa9df65dd62f5b3f2d562165aca23c"></script>
+    <script>
+        // 景点坐标数据
+        const spotData = {
+            "断桥残雪": { lng: 120.151347, lat: 30.258151, desc: "断桥残雪 - 西湖十景之一" },
+            "雷峰塔": { lng: 120.148849, lat: 30.230934, desc: "雷峰塔 - 俯瞰西湖全景" },
+            "灵隐寺": { lng: 120.101406, lat: 30.240826, desc: "灵隐寺 - 东晋古刹" },
+            "龙井村": { lng: 120.106676, lat: 30.218483, desc: "龙井村 - 西湖龙井产地" },
+            "宋城": { lng: 120.098741, lat: 30.169795, desc: "宋城 - 宋文化主题公园" },
+            "西溪湿地": { lng: 120.061159, lat: 30.255079, desc: "西溪湿地 - 国家湿地公园" }
+        };
+
+        // 初始化高德地图（修复控件错误）
+        let map, currentMarker;
+        function initMap() {
+            // 先加载所需控件插件
+            AMap.plugin(['AMap.ToolBar', 'AMap.ZoomControl'], function() {
+                // 创建地图实例
+                map = new AMap.Map('map-container', {
+                    zoom: 12, 
+                    center: [120.13, 30.24], 
+                    resizeEnable: true
+                });
+
+                // 添加可用的控件（移除Scale控件，避免错误）
+                map.addControl(new AMap.ToolBar());
+                map.addControl(new AMap.ZoomControl({ position: 'RB' }));
+            });
+        }
+
+        // 地图定位到指定景点
+        function locateSpot(spotName) {
+            const spot = spotData[spotName];
+            if (!spot || !map) return;
+
+            // 移除当前标记
+            if (currentMarker) {
+                map.remove(currentMarker);
+            }
+
+            // 地图定位到目标位置
+            map.setCenter([spot.lng, spot.lat]);
+            map.setZoom(15);
+
+            // 创建新标记
+            currentMarker = new AMap.Marker({
+                position: new AMap.LngLat(spot.lng, spot.lat),
+                title: spotName,
+                icon: new AMap.Icon({
+                    size: new AMap.Size(32, 32),
+                    image: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',
+                    imageSize: new AMap.Size(32, 32)
+                })
+            });
+            map.add(currentMarker);
+
+            // 显示信息窗口
+            const infoWindow = new AMap.InfoWindow({
+                content: `<div style="padding: 10px;"><h3 style="margin:0 0 5px 0;font-size:16px;">${spotName}</h3><p style="margin:0;font-size:14px;color:#666;">${spot.desc}</p></div>`,
+                offset: new AMap.Pixel(0, -40)
+            });
+            infoWindow.open(map, currentMarker.getPosition());
+        }
+
+        // 绑定行程项点击事件
+        function bindSpotClick() {
+            const spotItems = document.querySelectorAll('.spot-item');
+            spotItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    spotItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    const spotName = this.dataset.spot;
+                    locateSpot(spotName);
+                });
+            });
+        }
+
+        // 页面加载完成后初始化
+        window.onload = function() {
+            initMap();
+            bindSpotClick();
+
+            // 延迟1秒后默认定位（确保地图加载完成）
+            setTimeout(() => {
+                locateSpot('断桥残雪');
+                document.querySelector('.spot-item').classList.add('active');
+            }, 1000);
+        };
+    </script>
+</body>
+</html>

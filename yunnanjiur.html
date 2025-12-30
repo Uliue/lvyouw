@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云南九日游攻略</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;}
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 左侧行程栏 */
+        .itinerary {
+            width: 35%;
+            height: 100%;
+            background: white;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        }
+        .day-title {
+            margin: 20px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #165DFF;
+            font-size: 20px;
+            color: #333;
+        }
+        .day-title.day2 {border-color: #00B42A;}
+        .day-title.day3 {border-color: #FF7D00;}
+        .day-title.day4 {border-color: #975FE4;}
+        .day-title.day5 {border-color: #F53F3F;}
+        .day-title.day6 {border-color: #0FC6C2;}
+        .day-title.day7 {border-color: #FF9A2E;}
+        .day-title.day8 {border-color: #722ED1;}
+        .day-title.day9 {border-color: #1890FF;}
+        
+        .spot-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+        .spot-item:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-color: #ddd;
+        }
+        .spot-item.active {
+            background-color: #e8f4ff;
+            border-color: #165DFF;
+        }
+        .spot-img {
+            width: 100px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .spot-info h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .spot-info p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 右侧高德地图 */
+        #map-container {
+            width: 65%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧行程栏 -->
+    <div class="itinerary">
+        <!-- 第一天：昆明主城 -->
+        <h2 class="day-title">第一天：春城昆明初体验</h2>
+        <div class="spot-item" data-spot="滇池">
+            <!-- 本地图片路径：请将对应图片放到 lvyou 文件夹 -->
+            <img class="spot-img" src="yunnanjiur/dianc.png" alt="滇池">
+            <div class="spot-info">
+                <h3>滇池</h3>
+                <p>云南最大的淡水湖，又称“昆明湖”，冬季可喂红嘴鸥，海埂大坝是最佳观赏点。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="石林">
+            <img class="spot-img" src="yunnanjiur/shilin.png" alt="石林">
+            <div class="spot-info">
+                <h3>石林</h3>
+                <p>世界喀斯特地貌精华，阿诗玛故乡，剑峰池、望峰亭等景点尽显奇石奇观。</p>
+            </div>
+        </div>
+
+        <!-- 第二天：昆明-大理 -->
+        <h2 class="day-title day2">第二天：大理风花雪月</h2>
+        <div class="spot-item" data-spot="大理古城">
+            <img class="spot-img" src="yunnanjiur/daliguc.png" alt="大理古城">
+            <div class="spot-info">
+                <h3>大理古城</h3>
+                <p>南诏国古都，背靠苍山面朝洱海，人民路、洋人街尽显大理慢生活。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="洱海">
+            <img class="spot-img" src="yunnanjiur/ehai.png" alt="洱海">
+            <div class="spot-info">
+                <h3>洱海</h3>
+                <p>大理“母亲湖”，环海西路骑行、双廊古镇观海是体验洱海的最佳方式。</p>
+            </div>
+        </div>
+
+        <!-- 第三天：大理苍山 -->
+        <h2 class="day-title day3">第三天：苍山秘境探索</h2>
+        <div class="spot-item" data-spot="苍山">
+            <img class="spot-img" src="yunnanjiur/cangshan.png" alt="苍山">
+            <div class="spot-info">
+                <h3>苍山</h3>
+                <p>大理“风花雪月”之苍山雪，洗马潭索道、寂照庵、玉带云游路值得体验。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="崇圣寺三塔">
+            <img class="spot-img" src="yunnanjiur/santa.png" alt="崇圣寺三塔">
+            <div class="spot-info">
+                <h3>崇圣寺三塔</h3>
+                <p>大理国皇家寺院，三塔倒影公园是拍摄三塔全景的最佳位置。</p>
+            </div>
+        </div>
+
+        <!-- 第四天：大理-丽江 -->
+        <h2 class="day-title day4">第四天：丽江古城慢游</h2>
+        <div class="spot-item" data-spot="丽江古城">
+            <img class="spot-img" src="yunnanjiur/lijiangguc.png" alt="丽江古城">
+            <div class="spot-info">
+                <h3>丽江古城</h3>
+                <p>世界文化遗产，四方街、大水车、木府是核心景点，夜景与民谣是特色。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="束河古镇">
+            <img class="spot-img" src="yunnanjiur/shuheguzheng.png" alt="束河古镇">
+            <div class="spot-info">
+                <h3>束河古镇</h3>
+                <p>丽江三大古镇之一，比大研古城更安静，茶马古道博物馆是核心看点。</p>
+            </div>
+        </div>
+
+        <!-- 第五天：丽江玉龙雪山 -->
+        <h2 class="day-title day5">第五天：玉龙雪山朝圣</h2>
+        <div class="spot-item" data-spot="玉龙雪山">
+            <img class="spot-img" src="yunnanjiur/yulong.png" alt="玉龙雪山">
+            <div class="spot-info">
+                <h3>玉龙雪山</h3>
+                <p>纳西族神山，4680米观景台、冰川公园、蓝月谷是必打卡景点。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="蓝月谷">
+            <img class="spot-img" src="yunnanjiur/lanyugu.png" alt="蓝月谷">
+            <div class="spot-info">
+                <h3>蓝月谷</h3>
+                <p>玉龙雪山脚下的“小九寨沟”，湖水因矿物质呈蓝绿色，无需门票即可观赏。</p>
+            </div>
+        </div>
+
+        <!-- 第六天：丽江-香格里拉 -->
+        <h2 class="day-title day6">第六天：香格里拉秘境</h2>
+        <div class="spot-item" data-spot="普达措国家公园">
+            <img class="spot-img" src="yunnanjiur/puda.png" alt="普达措国家公园">
+            <div class="spot-info">
+                <h3>普达措国家公园</h3>
+                <p>中国第一个国家公园，属都湖、碧塔海、弥里塘亚高山草甸尽显高原风光。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="独克宗古城">
+            <img class="spot-img" src="yunnanjiur/duke.png" alt="独克宗古城">
+            <div class="spot-info">
+                <h3>独克宗古城</h3>
+                <p>中国最大的藏民居群，转经筒、龟山公园、松赞林寺是核心看点。</p>
+            </div>
+        </div>
+
+        <!-- 第七天：香格里拉人文 -->
+        <h2 class="day-title day7">第七天：藏地文化体验</h2>
+        <div class="spot-item" data-spot="松赞林寺">
+            <img class="spot-img" src="yunnanjiur/songzan.png" alt="松赞林寺">
+            <div class="spot-info">
+                <h3>松赞林寺</h3>
+                <p>云南最大的藏传佛教寺院，有“小布达拉宫”之称，晨雾景观绝美。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="纳帕海">
+            <img class="spot-img" src="yunnanjiur/naipahai.png" alt="纳帕海">
+            <div class="spot-info">
+                <h3>纳帕海</h3>
+                <p>高原季节性湖泊，夏季是草原，冬季是湿地，可骑马体验藏区草原风光。</p>
+            </div>
+        </div>
+
+        <!-- 第八天：香格里拉-泸沽湖 -->
+        <h2 class="day-title day8">第八天：泸沽湖风情</h2>
+        <div class="spot-item" data-spot="泸沽湖">
+            <img class="spot-img" src="yunnanjiur/likuhu.png" alt="泸沽湖">
+            <div class="spot-info">
+                <h3>泸沽湖</h3>
+                <p>摩梭人母系社会的核心区域，里格半岛、猪槽船、走婚桥是特色体验。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="里格半岛">
+            <img class="spot-img" src="yunnanjiur/bandao.png" alt="里格半岛">
+            <div class="spot-info">
+                <h3>里格半岛</h3>
+                <p>泸沽湖标志性景观，三面环水，观景台可俯瞰整个半岛与湖面全景。</p>
+            </div>
+        </div>
+
+        <!-- 第九天：泸沽湖-丽江返程 -->
+        <h2 class="day-title day9">第九天：沙溪古镇返程</h2>
+        <div class="spot-item" data-spot="沙溪古镇">
+            <img class="spot-img" src="yunnanjiur/shaxi.png" alt="沙溪古镇">
+            <div class="spot-info">
+                <h3>沙溪古镇</h3>
+                <p>茶马古道幸存的古集市，四方街、玉津桥、先锋书局尽显原生态之美。</p>
+            </div>
+        </div>
+        <div class="spot-item" data-spot="虎跳峡">
+            <img class="spot-img" src="yunnanjiur/hutiaoxia.png" alt="虎跳峡">
+            <div class="spot-info">
+                <h3>虎跳峡</h3>
+                <p>世界上最深的峡谷之一，上虎跳峡最壮观，江水汹涌，虎跳石是核心看点。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧高德地图 -->
+    <div id="map-container"></div>
+
+    <!-- 引入高德地图API -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=d2fa9df65dd62f5b3f2d562165aca23c"></script>
+    <script>
+        // 云南景点坐标数据（高德地图十进制经纬度）
+        const spotData = {
+            "滇池": { lng: 102.714854, lat: 24.912641, desc: "滇池 - 云南最大淡水湖" },
+            "石林": { lng: 103.325701, lat: 24.812964, desc: "石林 - 喀斯特地貌奇观" },
+            "大理古城": { lng: 100.164, lat: 25.694836, desc: "大理古城 - 南诏国古都" },
+            "洱海": { lng: 100.247321, lat: 25.603053, desc: "洱海 - 大理母亲湖" },
+            "苍山": { lng: 100.119072, lat: 25.657252, desc: "苍山 - 大理风花雪月之苍山雪" },
+            "崇圣寺三塔": { lng: 100.143044, lat: 25.704129, desc: "崇圣寺三塔 - 大理皇家寺院" },
+            "丽江古城": { lng: 100.235517, lat: 26.870507, desc: "丽江古城 - 世界文化遗产" },
+            "束河古镇": { lng: 100.205679, lat: 26.9196, desc: "束河古镇 - 茶马古道重镇" },
+            "玉龙雪山": { lng: 100.210679, lat: 27.129447, desc: "玉龙雪山 - 纳西族神山" },
+            "蓝月谷": { lng: 100.245886, lat: 27.124436, desc: "蓝月谷 - 玉龙雪山脚下的蓝宝石" },
+            "普达措国家公园": { lng: 99.951808, lat: 27.856299, desc: "普达措 - 中国首个国家公园" },
+            "独克宗古城": { lng: 99.708514, lat: 27.810532, desc: "独克宗古城 - 藏式古城" },
+            "松赞林寺": { lng: 99.705525, lat: 27.859991, desc: "松赞林寺 - 小布达拉宫" },
+            "纳帕海": { lng: 99.646379, lat: 27.824387, desc: "纳帕海 - 高原湿地草原" },
+            "泸沽湖": { lng: 100.809191, lat: 27.707434, desc: "泸沽湖 - 摩梭人母系家园" },
+            "里格半岛": { lng: 100.751663, lat: 27.727104, desc: "里格半岛 - 泸沽湖标志性景观" },
+            "沙溪古镇": { lng: 99.849895, lat: 26.315721, desc: "沙溪古镇 - 茶马古道活化石" },
+            "虎跳峡": { lng: 100.114236, lat: 27.188942, desc: "虎跳峡 - 世界最深峡谷之一" }
+        };
+
+        // 初始化高德地图（适配云南大跨度范围）
+        let map, currentMarker;
+        function initMap() {
+            // 先加载所需控件插件
+            AMap.plugin(['AMap.ToolBar', 'AMap.ZoomControl'], function() {
+                // 创建地图实例（默认中心点设为大理，适配云南全域）
+                map = new AMap.Map('map-container', {
+                    zoom: 7, 
+                    center: [100.18, 25.69], 
+                    resizeEnable: true
+                });
+
+                // 添加可用的控件
+                map.addControl(new AMap.ToolBar());
+                map.addControl(new AMap.ZoomControl({ position: 'RB' }));
+            });
+        }
+
+        // 地图定位到指定景点（保留原逻辑）
+        function locateSpot(spotName) {
+            const spot = spotData[spotName];
+            if (!spot || !map) return;
+
+            // 移除当前标记
+            if (currentMarker) {
+                map.remove(currentMarker);
+            }
+
+            // 地图定位到目标位置（云南跨度大，定位后缩放至14级）
+            map.setCenter([spot.lng, spot.lat]);
+            map.setZoom(14);
+
+            // 创建新标记
+            currentMarker = new AMap.Marker({
+                position: new AMap.LngLat(spot.lng, spot.lat),
+                title: spotName,
+                icon: new AMap.Icon({
+                    size: new AMap.Size(32, 32),
+                    image: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',
+                    imageSize: new AMap.Size(32, 32)
+                })
+            });
+            map.add(currentMarker);
+
+            // 显示信息窗口
+            const infoWindow = new AMap.InfoWindow({
+                content: `<div style="padding: 10px;"><h3 style="margin:0 0 5px 0;font-size:16px;">${spotName}</h3><p style="margin:0;font-size:14px;color:#666;">${spot.desc}</p></div>`,
+                offset: new AMap.Pixel(0, -40)
+            });
+            infoWindow.open(map, currentMarker.getPosition());
+        }
+
+        // 绑定行程项点击事件（保留原逻辑）
+        function bindSpotClick() {
+            const spotItems = document.querySelectorAll('.spot-item');
+            spotItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    spotItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    const spotName = this.dataset.spot;
+                    locateSpot(spotName);
+                });
+            });
+        }
+
+        // 页面加载完成后初始化（保留原逻辑）
+        window.onload = function() {
+            initMap();
+            bindSpotClick();
+
+            // 延迟1秒后默认定位到滇池
+            setTimeout(() => {
+                locateSpot('滇池');
+                document.querySelector('.spot-item').classList.add('active');
+            }, 1000);
+        };
+    </script>
+</body>
+</html>

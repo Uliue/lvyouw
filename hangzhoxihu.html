@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杭州旅游指南 - 人间天堂，醉美杭州</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 移除导航栏样式 */
+        
+        /* 英雄区 */
+        .hero {
+            height: 80vh;
+            /* 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/hero-bg.jpg */
+            background: url('hangzhoxihu/lunbo1.png') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #ff7a45;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+        
+        /* 容器样式 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 简介部分 */
+        .intro {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .intro h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        .intro-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .intro-img img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* 热门景点 */
+        .attractions {
+            padding: 4rem 0;
+            background-color: #f5f5f5;
+        }
+        
+        .attractions h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover .card-img img {
+            transform: scale(1.1);
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+        
+        .card-content p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        /* 出行方式 */
+        .transport {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .transport h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        .transport-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .transport-item {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .transport-item i {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+        
+        .transport-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        /* 美食推荐 */
+        .food {
+            padding: 4rem 0;
+            background-color: #f5f5f5;
+        }
+        
+        .food h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            font-size: 1.1rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .intro-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .intro h2, .attractions h2, .transport h2, .food h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 移除导航栏 -->
+
+    <!-- 英雄区 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>杭州 · 人间天堂</h1>
+            <p>三面云山一面城，一江春水穿城过。杭州，这座拥有千年历史的文化名城，以其秀丽的湖光山色和众多的名胜古迹闻名于世。</p>
+            <a href="#attractions" class="btn">探索杭州</a>
+        </div>
+    </section>
+
+    <!-- 城市简介 -->
+    <section class="intro" id="intro">
+        <div class="container">
+            <h2>杭州简介</h2>
+            <div class="intro-content">
+                <div class="intro-text">
+                    <p>杭州，简称“杭”，是浙江省省会、副省级市、杭州都市圈核心城市，国务院批复确定的中国浙江省省会和全省经济、文化、科教中心、长江三角洲中心城市之一。</p>
+                    <br>
+                    <p>杭州自秦朝设县治以来已有2200多年的历史，曾是吴越国和南宋的都城。因风景秀丽，素有“人间天堂”的美誉。杭州得益于京杭大运河和通商口岸的便利，以及自身发达的丝绸和粮食产业，历史上曾是重要的商业集散中心。</p>
+                    <br>
+                    <p>杭州拥有西湖、西溪湿地等著名景点，其中西湖文化景观被列入《世界遗产名录》。杭州还是中国重要的电子商务中心之一，阿里巴巴集团总部位于此。</p>
+                </div>
+                <div class="intro-img">
+                    <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/hangzhou-city.jpg -->
+                    <img src="hangzhoxihu/lunbo.png" alt="杭州城市风光">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 热门景点 -->
+    <section class="attractions" id="attractions">
+        <div class="container">
+            <h2>热门景点</h2>
+            <div class="cards">
+                <!-- 西湖 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/west-lake.jpg -->
+                        <img src="hangzhoxihu/xihu.png" alt="西湖">
+                    </div>
+                    <div class="card-content">
+                        <h3>西湖</h3>
+                        <p>西湖是中国大陆首批国家重点风景名胜区和中国十大风景名胜之一。三面环山，一面濒城，四季分明，风光旖旎。著名的西湖十景包括苏堤春晓、断桥残雪、雷峰夕照等。</p>
+                        <p><strong>门票：</strong>免费（部分景点收费）</p>
+                    </div>
+                </div>
+                
+                <!-- 灵隐寺 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/lingyin-temple.jpg -->
+                        <img src="hangzhoxihu/lingys.png" alt="灵隐寺">
+                    </div>
+                    <div class="card-content">
+                        <h3>灵隐寺</h3>
+                        <p>灵隐寺创建于东晋咸和元年，是杭州最早的名刹，也是中国佛教禅宗十大古刹之一。寺庙依山而建，风景清幽，香火鼎盛，寺内有飞来峰、天王殿、大雄宝殿等景点。</p>
+                        <p><strong>门票：</strong>飞来峰45元，灵隐寺香花券30元</p>
+                    </div>
+                </div>
+                
+                <!-- 西溪国家湿地公园 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/xixi-wetland.jpg -->
+                        <img src="hangzhoxihu/shidi.png" alt="西溪国家湿地公园">
+                    </div>
+                    <div class="card-content">
+                        <h3>西溪国家湿地公园</h3>
+                        <p>西溪湿地是中国第一个集城市湿地、农耕湿地、文化湿地于一体的国家级湿地公园。这里生态资源丰富，自然景观幽雅，文化积淀深厚，素有“三堤十景”之称。</p>
+                        <p><strong>门票：</strong>80元</p>
+                    </div>
+                </div>
+                
+                <!-- 千岛湖 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/qiandao-lake.jpg -->
+                        <img src="hangzhoxihu/qiandaohu.png" alt="千岛湖">
+                    </div>
+                    <div class="card-content">
+                        <h3>千岛湖</h3>
+                        <p>千岛湖位于杭州淳安县，是1959年因修建新安江水电站而形成的人工湖。湖中拥有1078个岛屿，水质优良，森林覆盖率高，是国家级风景名胜区。</p>
+                        <p><strong>门票：</strong>旺季130元，淡季110元</p>
+                    </div>
+                </div>
+                
+                <!-- 宋城 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/song-city.jpg -->
+                        <img src="hangzhoxihu/songcheng.png" alt="宋城">
+                    </div>
+                    <div class="card-content">
+                        <h3>宋城</h3>
+                        <p>宋城是中国最大的宋文化主题公园，再现了宋代都市的繁华景象。景区内有《宋城千古情》大型演出，以及各种宋代特色的建筑、表演和小吃。</p>
+                        <p><strong>门票：</strong>含演出310元起</p>
+                    </div>
+                </div>
+                
+                <!-- 钱塘江大潮 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/qiantang-tide.jpg -->
+                        <img src="hangzhoxihu/qiantangjiang.png" alt="钱塘江大潮">
+                    </div>
+                    <div class="card-content">
+                        <h3>钱塘江大潮</h3>
+                        <p>钱塘江大潮是世界三大涌潮之一，每年农历八月十八前后是最佳观潮期。海宁盐官是观潮第一胜地，杭州的钱江新城、七堡、九溪等地也都是不错的观潮点。</p>
+                        <p><strong>门票：</strong>免费（部分观潮点收费）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 出行方式 -->
+    <section class="transport" id="transport">
+        <div class="container">
+            <h2>出行方式</h2>
+            <div class="transport-content">
+                <!-- 飞机 -->
+                <div class="transport-item">
+                    <i class="fas fa-plane"></i>
+                    <h3>飞机</h3>
+                    <p>杭州萧山国际机场是华东地区重要的航空枢纽，距市中心约27公里。有机场大巴、地铁1号线、出租车等多种方式往返市区，地铁约45分钟可达市中心。</p>
+                </div>
+                
+                <!-- 高铁/火车 -->
+                <div class="transport-item">
+                    <i class="fas fa-train"></i>
+                    <h3>高铁/火车</h3>
+                    <p>杭州有杭州东站、杭州站、杭州西站等火车站。高铁网络发达，到上海仅需1小时，到南京、合肥等城市也非常便捷。</p>
+                </div>
+                
+                <!-- 地铁 -->
+                <div class="transport-item">
+                    <i class="fas fa-subway"></i>
+                    <h3>地铁</h3>
+                    <p>杭州地铁已开通10余条线路，覆盖主城区及周边区域。景点如西湖、西溪湿地、宋城等均有地铁可达，票价2-10元不等。</p>
+                </div>
+                
+                <!-- 公交/出租车 -->
+                <div class="transport-item">
+                    <i class="fas fa-bus"></i>
+                    <h3>公交/出租车</h3>
+                    <p>公交线路覆盖全城，票价1-4元。出租车起步价13元/3公里，网约车也非常方便。西湖景区内有观光电瓶车，票价20-50元。</p>
+                </div>
+                
+                <!-- 共享单车/电动车 -->
+                <div class="transport-item">
+                    <i class="fas fa-bicycle"></i>
+                    <h3>共享单车/电动车</h3>
+                    <p>杭州是自行车友好城市，西湖周边有大量共享单车和电动自行车。沿西湖骑行是体验杭州的绝佳方式，骑行道完善。</p>
+                </div>
+                
+                <!-- 游船 -->
+                <div class="transport-item">
+                    <i class="fas fa-ship"></i>
+                    <h3>游船</h3>
+                    <p>西湖有多种游船可选，普通游船45元，豪华游船120元。京杭大运河也有夜游游船，票价100-180元，可欣赏运河两岸夜景。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 美食推荐 -->
+    <section class="food" id="food">
+        <div class="container">
+            <h2>特色美食</h2>
+            <div class="cards">
+                <!-- 西湖醋鱼 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/west-lake-vinegar-fish.jpg -->
+                        <img src="hangzhoxihu/xihucuyu.png" alt="西湖醋鱼">
+                    </div>
+                    <div class="card-content">
+                        <h3>西湖醋鱼</h3>
+                        <p>杭州传统名菜，选用西湖草鱼为主料，烹制后色泽红亮，酸甜可口，带有蟹味，是杭帮菜的代表之一。</p>
+                    </div>
+                </div>
+                
+                <!-- 东坡肉 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/dongpo-pork.jpg -->
+                        <img src="hangzhoxihu/dongpro.png" alt="东坡肉">
+                    </div>
+                    <div class="card-content">
+                        <h3>东坡肉</h3>
+                        <p>相传为苏东坡所创，选用五花肉炖制而成，色泽红亮，肥而不腻，酥烂如豆腐，入口即化。</p>
+                    </div>
+                </div>
+                
+                <!-- 龙井虾仁 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/longjing-shrimp.jpg -->
+                        <img src="hangzhoxihu/xiaqiu.png" alt="龙井虾仁">
+                    </div>
+                    <div class="card-content">
+                        <h3>龙井虾仁</h3>
+                        <p>选用新鲜河虾和明前龙井茶叶烹制，虾仁鲜嫩，茶香四溢，是杭州的经典名菜。</p>
+                    </div>
+                </div>
+                
+                <!-- 叫化鸡 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/beggar-chicken.jpg -->
+                        <img src="hangzhoxihu/jiaohuaji.png" alt="叫化鸡">
+                    </div>
+                    <div class="card-content">
+                        <h3>叫化鸡</h3>
+                        <p>又称富贵鸡，用荷叶包裹土鸡，外层裹泥烤制而成。鸡肉鲜嫩多汁，带有荷叶的清香。</p>
+                    </div>
+                </div>
+                
+                <!-- 片儿川 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/ Pian'erchuan-noodles.jpg -->
+                        <img src="hangzhoxihu/pianchuane.png" alt="片儿川">
+                    </div>
+                    <div class="card-content">
+                        <h3>片儿川</h3>
+                        <p>杭州特色面条，以雪菜、笋片、瘦肉片为浇头，汤头鲜美，是杭州人最爱的早餐之一。</p>
+                    </div>
+                </div>
+                
+                <!-- 桂花糖藕 -->
+                <div class="card">
+                    <div class="card-img">
+                        <!-- 本地图片替换提示：将下方路径改为你的本地图片路径，如 ./images/osmanthus-sugar-lotus-root.jpg -->
+                        <img src="hangzhoxihu/tango.png" alt="桂花糖藕">
+                    </div>
+                    <div class="card-content">
+                        <h3>桂花糖藕</h3>
+                        <p>杭州传统甜品，选用莲藕灌入糯米，加桂花、冰糖慢炖而成，香甜软糯，桂香浓郁。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2025 杭州旅游指南 | 人间天堂，醉美杭州</p>
+                <br>
+                <p>温馨提示：出行前请关注天气和景区开放信息，文明旅游，爱护环境</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动（保留，因为按钮仍需跳转）
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 移除导航栏滚动效果相关代码
+    </script>
+</body>
+</html>
